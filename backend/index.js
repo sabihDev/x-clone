@@ -1,11 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 
 import authRoutes from "./routes/auth.routes.js";
 import connectMongoDb from "./db/connectMongoDb.js";
 
 const app = express();
-dotenv.config();
 
 // Parse JSON bodies
 app.use(express.json());
