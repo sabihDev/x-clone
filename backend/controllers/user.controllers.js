@@ -14,7 +14,7 @@ export const getUserProfile = async (req, res) => {
     }
 }
 
-export const followOrUnfollow = async (req, res) => {
+export const followOrUnfollowUser = async (req, res) => {
     try {
         const { id } = req.params;
         const { userId } = req.body;
