@@ -34,11 +34,13 @@ export const followOrUnfollow = async (req, res) => {
         if (isFollowing) {
             await user.updateOne({ $pull: { followers: userId } });
             await me.updateOne({ $pull: { following: id } });
+            return res.status(200).json({ message: "Unfollowed successfully" });
         } else {
             await user.updateOne({ $push: { followers: userId } });
             await me.updateOne({ $push: { following: id } });
+            return res.status(200).json({ message: "Followed successfully" });
         }
-        return res.status(200).json({ message: "Followed or Unfollowed" });
+        
     } catch (error) {
         console.log("Error in followOrUnfollow controller", error.message);
         return res.status(500).json({ error: "Internal Server Error" });
