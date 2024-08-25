@@ -9,6 +9,7 @@ const app = express();
 
 // Parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Define the port
 const PORT = process.env.PORT || 5000;

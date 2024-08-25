@@ -20,6 +20,10 @@ export const signup = async (req, res) => {
             return res.status(400).json({ message: 'Email already exists' });
         }
 
+        if(password.length < 6){
+            return res.status(400).json({ message: 'Password must be at least 6 characters' });
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -51,9 +55,41 @@ export const signup = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    console.log('Login controller');
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        const isMatch = await bcrypt.compare(password, user?.password || "");
+
+        if(!user || !isMatch){
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        generateTokenAndSetCookie(user._id, res);
+
+        return res.status(200).json({ 
+            _id : user._id,
+            fullName : user.fullName,
+            username : user.username,
+            email : user.email,
+            profileImage : user.profileImage,
+            coverImage : user.coverImage,
+            followers : user.followers,
+            following : user.following
+        });
+    } catch (error) {
+        console.log("Error in login controller", error.message);
+        
+        return res.status(500).json({ error:"Internal Server Error" });
+    }
 }
 
 export const logout = async (req, res) => {
-    console.log('Logout controller');
+    try {
+        res.cookie("jwt","",{maxAge:0});
+        res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+        console.log("Error in login controller", error.message);
+        
+        return res.status(500).json({ error:"Internal Server Error" });
+    }
 }
