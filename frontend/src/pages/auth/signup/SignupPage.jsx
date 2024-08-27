@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
-const SignUpPage = () => {
+const SignupPage = () => {
 	const [formData, setFormData] = useState({
 		email: "",
 		username: "",
@@ -95,4 +95,4 @@ const SignUpPage = () => {
 		</div>
 	);
 };
-export default SignUpPage;
+export default SignupPage;
