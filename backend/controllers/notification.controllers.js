@@ -30,3 +30,24 @@ export const deleteNotifications = async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });        
     }
 };
+
+export const deleteNotification = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user._id;
+        const notification = await Notification.findById(id);
+        if (!notification) {
+            return res.status(404).json({ message: "Notification not found" });
+        }
+
+        if (notification.to.toString() !== userId.toString()) {
+            return res.status(403).json({ message: "You are not authorized to delete this notification" });
+        }
+
+        await Notification.findByIdAndDelete(id)
+        res.status(200).json({ message: "Notification deleted successfully" });
+    } catch (error) {
+        console.log("Error in deleteNotification controller", error.message);
+        return res.status(500).json({ error: "Internal Server Error" });        
+    }
+}
