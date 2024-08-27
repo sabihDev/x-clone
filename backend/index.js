@@ -4,6 +4,7 @@ dotenv.config();
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import postRoutes from "./routes/post.routes.js";
 import connectMongoDb from "./db/connectMongoDb.js";
 
 const app = express();
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 // Define routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 // Start the server
 app.listen(PORT, () => {
