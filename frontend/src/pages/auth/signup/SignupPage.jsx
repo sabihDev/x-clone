@@ -47,7 +47,10 @@ const SignupPage = () => {
 		},
 		onSuccess: () =>{
 			toast.success("Account created successfully");
-		}
+		},
+		onError: () => {
+			toast.error("Something went wrong");
+		},
 	});
 
 	const handleSubmit = (e) => {

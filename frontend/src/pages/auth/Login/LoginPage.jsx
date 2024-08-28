@@ -34,7 +34,10 @@ const LoginPage = () => {
 		},
 		onSuccess: () => {
 			toast.success("Logged in successfully");
-		}
+		},
+		onError: () => {
+			toast.error("Something went wrong");
+		},
 	});
 
 	const handleSubmit = (e) => {
