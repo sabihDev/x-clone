@@ -8,6 +8,7 @@ import ProfileHeaderSkeleton from "../../components/skeletons/ProfileHeaderSkele
 import EditProfileModal from "./EditProfileModal";
 
 import { POSTS } from "../../utils/db/dummy";
+import useFollow from "../../hooks/useFollow";
 
 import { FaArrowLeft } from "react-icons/fa6";
 import { IoCalendarOutline } from "react-icons/io5";
@@ -20,7 +21,8 @@ const ProfilePage = () => {
 	const [profileImg, setProfileImg] = useState(null);
 	const [feedType, setFeedType] = useState("posts");
 
-	const {data: authUser} = useQuery({queryKey: ["authUser"]})
+	const {data: authUser} = useQuery({queryKey: ["authUser"]});
+	const  {follow, isPending} = useFollow();
 
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
@@ -43,7 +45,8 @@ const ProfilePage = () => {
 		},
 	});
 	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
-	const isMyProfile = authUser?._id === user?._id
+	const isMyProfile = authUser?._id === user?._id;
+	const amIFollowing = authUser?.following?.includes(user?._id);
 
 
 	const handleImgChange = (e, state) => {
@@ -130,9 +133,11 @@ const ProfilePage = () => {
 								{!isMyProfile && (
 									<button
 										className='btn btn-outline rounded-full btn-sm'
-										onClick={() => alert("Followed successfully")}
+										onClick={() => follow(user?._id)}
 									>
-										Follow
+										{isPending && "Loading..." }
+										{!isPending && amIFollowing && "Unfollow"}
+										{!isPending && !amIFollowing && "Follow"}
 									</button>
 								)}
 								{(coverImg || profileImg) && (
